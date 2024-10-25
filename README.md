@@ -14,7 +14,7 @@ This project is a rule engine built with Flask, enabling users to create, store,
 - Evaluate Rules: Test if rules are satisfied based on dynamic input data, supporting custom conditions on user attributes.
 
 # Project Structure
-```plaintext
+
 rule_engine_app/
 │
 ├── app.py             # Main application with route handling
@@ -37,33 +37,25 @@ Flask and SQLAlchemy
 Installation
 Clone the Repository:
 
-bash
-Copy code
 git clone https://github.com/your-username/rule_engine_app.git
 cd rule_engine_app
 Create a Virtual Environment:
 
-bash
-Copy code
 python -m venv venv
 source venv/bin/activate   # On macOS/Linux
 venv\Scripts\activate      # On Windows
 Install Dependencies:
 
-bash
-Copy code
 pip install -r requirements.txt
 
 Set Up the Database:
 Run the following commands in a Python shell to initialize the database:
-python
-Copy code
+
 from app import db
 db.create_all()
 Run the Application:
 
-bash
-Copy code
+
 flask run
 Access the application at http://127.0.0.1:5000.
 
@@ -77,8 +69,7 @@ Description: Renders the main HTML interface.
 2. POST /create_rule
 Description: Creates a new rule and stores it in the database.
 Request Body:
-json
-Copy code
+
 {
   "rule_string": "((age > 30 AND department = 'Sales') OR (age < 25 AND department = 'Marketing')) AND (salary > 50000 OR experience > 5)"
 }
@@ -90,8 +81,7 @@ Response:
 3. POST /combine_rules
 Description: Combines multiple rules by ID using an AND operator.
 Request Body:
-json
-Copy code
+
 {
   "rule_ids": [1, 2]
 }
@@ -104,8 +94,7 @@ Response:
 Description: Evaluates a rule against provided data.
 URL Parameter: rule_id - The ID of the rule to evaluate.
 Request Body:
-json
-Copy code
+
 {
   "age": 35,
   "department": "Sales",
