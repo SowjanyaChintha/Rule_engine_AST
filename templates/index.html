@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rule Engine</title>
+</head>
+<body>
+    <h1>Rule Engine</h1>
+
+    <h2>Create Rule</h2>
+    <form id="createRuleForm">
+        <label for="rule">Rule String:</label>
+        <input type="text" id="rule" name="rule" required>
+        <button type="submit">Create Rule</button>
+    </form>
+
+    <h2>Evaluate Rule</h2>
+    <form id="evaluateRuleForm">
+        <label for="rule_id">Rule ID:</label>
+        <input type="text" id="rule_id" name="rule_id" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" required>
+
+        <label for="salary">Salary:</label>
+        <input type="number" id="salary" name="salary" required>
+
+        <label for="experience">Experience:</label> <!-- Added field for experience -->
+        <input type="number" id="experience" name="experience" required>
+
+        <button type="submit">Evaluate Rule</button>
+    </form>
+
+    <script>
+        // Handle the create rule form submission
+        document.getElementById('createRuleForm').onsubmit = function(e) {
+            e.preventDefault();
+            const rule_string = document.getElementById('rule').value;
+            fetch('/create_rule', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({rule_string})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.rule_id) {
+                    alert('Rule created with ID: ' + data.rule_id);
+                } else {
+                    alert('Error creating rule: ' + data.error);
+                }
+            })
+            .catch(err => {
+                alert('An error occurred: ' + err);
+            });
+        };
+
+        // Handle the evaluate rule form submission
+        document.getElementById('evaluateRuleForm').onsubmit = function(e) {
+            e.preventDefault();
+
+            const rule_id = document.getElementById('rule_id').value;
+            const age = document.getElementById('age').value;
+            const department = document.getElementById('department').value;
+            const salary = document.getElementById('salary').value;
+            const experience = document.getElementById('experience').value; // Get experience
+
+            const data = {
+                age: parseInt(age),
+                department: department,
+                salary: parseInt(salary),
+                experience: parseInt(experience) // Include experience in the data
+            };
+
+            fetch(`/evaluate_rule/${rule_id}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(result => {
+                alert('Evaluation Result: ' + result.result);
+            })
+            .catch(err => {
+                alert('An error occurred: ' + err.message);
+            });
+        };
+    </script>
+</body>
+</html>
